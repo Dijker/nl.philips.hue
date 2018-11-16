@@ -13,9 +13,11 @@ class App extends Homey.App {
 		
 		this._onBridge = this._onBridge.bind(this);
 		this._onFlowActionSetScene = this._onFlowActionSetScene.bind(this);
+		this._onFlowActionCLIPGeneric = this._onFlowActionCLIPGeneric.bind(this);
 		this._onFlowActionGroupOn = this._onFlowActionGroupOn.bind(this);
 		this._onFlowActionGroupOff = this._onFlowActionGroupOff.bind(this);
 		this._onSceneAutocomplete = this._onSceneAutocomplete.bind(this);
+		this._onCLIPGenericAutocomplete = this._onCLIPGenericAutocomplete.bind(this);
 		this._onGroupAutocomplete = this._onGroupAutocomplete.bind(this);
 		
 		/*
@@ -37,6 +39,12 @@ class App extends Homey.App {
 			.getArgument('scene')
 			.registerAutocompleteListener( this._onSceneAutocomplete );
 			
+		new Homey.FlowCardAction('setCLIPGenericStatus')
+			.register()
+			.registerRunListener( this._onFlowActionCLIPGeneric )
+			.getArgument('clip_generic')
+			.registerAutocompleteListener( this._onCLIPGenericAutocomplete );
+
 		new Homey.FlowCardAction('groupOn')
 			.register()
 			.registerRunListener( this._onFlowActionGroupOn )
@@ -81,6 +89,15 @@ class App extends Homey.App {
 		return bridge.setScene( args.scene.id );		
 	}
 	
+	_onFlowActionCLIPGeneric( args ) {
+		let bridge = this.getBridge( args.clip_generic.bridge_id );
+		if( bridge instanceof Error ) return Promise.reject( bridge );
+
+		let sensor = bridge.getSensor( args.clip_generic.sensor_id );
+		sensor.state.status = args.clip_value;
+		return bridge.saveSensor ( sensor );
+	}
+
 	_onFlowActionGroupOn( args ) {
 		this._onFlowActionGroup( args, true );		
 	}
@@ -164,6 +181,42 @@ class App extends Homey.App {
 		
 	}
 	
+	_onCLIPGenericAutocomplete( query ) {
+
+		const calls = [];
+		const bridges = this.getBridges();
+
+		if( Object.keys(bridges).length < 1 )
+			return Promise.reject( new Error( __("no_bridges") ) );
+
+		let resultArray = [];
+
+		for( let bridgeId in bridges ) {
+			let bridge = bridges[ bridgeId ];
+			let sensors = bridge.getSensors();
+
+			for( let sensorId in sensors) {
+				let sensor = sensors[sensorId];
+
+				if( sensor.type == 'CLIPGenericStatus' )
+					resultArray.push({
+						bridge_id			: bridgeId,
+						name				: sensor.name,
+						sensor_id			: sensorId,
+						description			: bridge.name,
+						description_icon	: bridge.icon
+					})
+			};
+		};
+
+		resultArray = resultArray.filter(( resultArrayItem ) => {
+			return resultArrayItem.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
+		});
+
+		return resultArray;
+
+	}
+
 	_onGroupAutocomplete( query ) {
 		
 		const calls = [];

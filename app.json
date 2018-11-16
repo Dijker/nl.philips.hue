@@ -374,6 +374,23 @@
 				]
 			},
 			{
+				"id": "setCLIPGenericStatus",
+				"title": {
+					"en": "Set CLIPGenericStatus value",
+					"nl": "Stel CLIPGenericStatus waarde in"
+				},
+				"args": [
+					{
+						"name": "clip_generic",
+						"type": "autocomplete"
+					},
+					{
+						"name": "clip_value",
+						"type": "number"
+					}
+				]
+			},
+			{
 				"id": "groupOn",
 				"title": {
 					"en": "Turn all lights on in a room",
