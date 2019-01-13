@@ -17,7 +17,9 @@ const iconsMap				= {
 	'LCT007'	: 'LCT001',
 	'LCT002'	: 'LCT002',
 	'LCT003'	: 'LCT003',
+	'LCT012'	: 'LCT012',
 	'LST001'	: 'LST001',
+	'LLC001'	: 'LLC001',
 	'LLC010'	: 'LLC010',
 	'LLC011'	: 'LLC011',
 	'LLC012'	: 'LLC011',
@@ -25,14 +27,18 @@ const iconsMap				= {
 	'LLC007'	: 'LLC007',
 	'LLC013'	: 'LLC013',
 	'LWB004'	: 'LCT001',
-	'LWB006'	: 'LCT001',
+	'LWB006'	: 'LWB006',
 	'LWB007'	: 'LCT001',
+	'LWB010'	: 'LWB006',
+	'LWB014'	: 'LWB006',
 	'LLM001'	: defaultIcon,
 	'LLM010'	: defaultIcon,
 	'LLM011'	: defaultIcon,
 	'LLM012'	: defaultIcon,
 	'LLC020'	: 'LLC020',
-	'LST002'	: 'LST001'
+	'LST002'	: 'LST001',
+	'LTW012'	: 'LCT012',
+	'LCT024'  : 'LCT024',
 }
 
 class DriverBulb extends Driver {
@@ -77,6 +83,7 @@ class DriverBulb extends Driver {
 		
 		for( let lightId in lights ) {
 			let light = lights[lightId];
+			console.log('Model ID:', light.modelId, light.name);
 
 			let deviceCapabilities = typeCapabilityMap[ light.type.toLowerCase() ];
 			if( !Array.isArray( deviceCapabilities ) ) continue;
