@@ -387,6 +387,19 @@
         ]
       },
       {
+        "id": "groupOn",
+        "title": {
+          "en": "Turn all lights on in a room",
+          "nl": "Zet alle lampen aan in een ruimte"
+        },
+        "args": [
+          {
+            "name": "group",
+            "type": "autocomplete"
+          }
+        ]
+      },
+      {
         "id": "setCLIPGenericStatus",
         "title": {
           "en": "Set CLIPGenericStatus value",
@@ -400,19 +413,6 @@
           {
             "name": "clip_value",
             "type": "number"
-          }
-        ]
-      },
-      {
-        "id": "groupOn",
-        "title": {
-          "en": "Turn all lights on in a room",
-          "nl": "Zet alle lampen aan in een ruimte"
-        },
-        "args": [
-          {
-            "name": "group",
-            "type": "autocomplete"
           }
         ]
       },
