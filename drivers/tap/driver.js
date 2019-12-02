@@ -14,9 +14,9 @@ module.exports = class DriverTap extends HueDriver {
   }
   
   static onPairListDevice({ bridge, device }) {
-    bridge.log('Tap Device:', device.modelid, device.name);
+    bridge.log('Tap Device:', device.modelid, device.type, device.name);
     
-    if( !['ZGPSWITCH'].includes(device.modelid)) return null;
+    if( !['ZGPSwitch'].includes(device.type)) return null;
     return {};
   }
   
