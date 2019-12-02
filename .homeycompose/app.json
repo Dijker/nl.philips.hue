@@ -1,6 +1,6 @@
 {
   "id": "nl.philips.hue",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "brandColor": "#F4AF2E",
   "compatibility": ">=3.0.0",
   "sdk": 2,
@@ -8,8 +8,7 @@
     "en": "Philips Hue"
   },
   "description": {
-    "en": "Philips Hue for Homey",
-    "de": "Philips Hue für Homey"
+    "en": "Transform the way you experience light"
   },
   "author": {
     "name": "Athom B.V."

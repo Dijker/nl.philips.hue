@@ -1,6 +1,6 @@
 {
   "id": "nl.philips.hue",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "brandColor": "#F4AF2E",
   "compatibility": ">=3.0.0",
   "sdk": 2,
@@ -8,8 +8,7 @@
     "en": "Philips Hue"
   },
   "description": {
-    "en": "Philips Hue for Homey",
-    "de": "Philips Hue für Homey"
+    "en": "Transform the way you experience light"
   },
   "author": {
     "name": "Athom B.V."
@@ -186,6 +185,48 @@
       }
     ],
     "triggers": [
+      {
+        "id": "button_button_pressed",
+        "title": {
+          "en": "The button has been pressed",
+          "nl": "De knop is ingedrukt"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
+      {
+        "id": "button_button_held",
+        "title": {
+          "en": "The button is being held",
+          "nl": "De knop werd ingehouden"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
+      {
+        "id": "button_button_released",
+        "title": {
+          "en": "The button has been released",
+          "nl": "De knop werd losgelaten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
       {
         "id": "dimmerswitch_button_pressed",
         "title": {
@@ -368,6 +409,53 @@
         }
       },
       "id": "bulb"
+    },
+    {
+      "images": {
+        "large": "/drivers/button/assets/images/large.jpg",
+        "small": "/drivers/button/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Smart button",
+        "nl": "Smart button",
+        "de": "Smart button"
+      },
+      "class": "button",
+      "capabilities": [],
+      "id": "button"
     },
     {
       "images": {

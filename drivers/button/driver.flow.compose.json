@@ -1,0 +1,25 @@
+{
+  "triggers": [
+    {
+      "id": "button_button_pressed",
+      "title": {
+        "en": "The button has been pressed",
+        "nl": "De knop is ingedrukt"
+      }
+    },
+    {
+      "id": "button_button_held",
+      "title": {
+        "en": "The button is being held",
+        "nl": "De knop werd ingehouden"
+      }
+    },
+    {
+      "id": "button_button_released",
+      "title": {
+        "en": "The button has been released",
+        "nl": "De knop werd losgelaten"
+      }
+    }
+  ]
+}
