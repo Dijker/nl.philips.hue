@@ -136,8 +136,8 @@ module.exports = class HueApp extends Homey.App {
   }
   
   async onFlowActionCLIPGeneric( args ) {
-    const bridge = await this.getBridge(args.sensor.bridge_id, false);
-    return bridge.setSensorState({ id: args.sensor.id, state: args.clip_value });
+    const bridge = await this.getBridge(args.clip_generic.bridge_id, false);
+    return bridge.setSensorState({ id: args.clip_generic.sensor_id, state: { status: args.clip_value }});
   }
   
   async onFlowCLIPGenericAutocomplete( query ) {    
@@ -161,7 +161,7 @@ module.exports = class HueApp extends Homey.App {
           const sensor = sensors[sensorId];
           if( sensor.type == 'CLIPGenericStatus' ) {
             resultArray.push({
-              id: sensorId,
+              sensor_id: sensorId,
               bridge_id: bridge.id,
               name: sensor.name,
               description: bridge.name,

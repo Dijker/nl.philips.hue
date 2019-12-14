@@ -58,24 +58,6 @@
       },
       {
         "title": {
-          "en": "Set CLIPGenericStatus value",
-          "nl": "Stel CLIPGenericStatus waarde in",
-          "de": "Legem Sie den CLIPGenericStatus Wert fest"
-        },
-        "args": [
-          {
-            "name": "clip_generic",
-            "type": "autocomplete"
-          },
-          {
-            "name": "clip_value",
-            "type": "number"
-          }
-        ],
-        "id": "setCLIPGenericStatus"
-      },
-      {
-        "title": {
           "en": "Set brightness of all lights in a room",
           "nl": "Zet de helderheid van alle lampen in een ruimte"
         },
@@ -96,6 +78,24 @@
           }
         ],
         "id": "groupSetBrightness"
+      },
+      {
+        "title": {
+          "en": "Set CLIPGenericStatus value",
+          "nl": "Stel CLIPGenericStatus waarde in",
+          "de": "Legen Sie den CLIPGenericStatus Wert fest"
+        },
+        "args": [
+          {
+            "name": "clip_generic",
+            "type": "autocomplete"
+          },
+          {
+            "name": "clip_value",
+            "type": "number"
+          }
+        ],
+        "id": "setCLIPGenericStatus"
       },
       {
         "title": {

@@ -1,0 +1,17 @@
+{
+  "title": {
+    "en": "Set CLIPGenericStatus value",
+    "nl": "Stel CLIPGenericStatus waarde in",
+    "de": "Legen Sie den CLIPGenericStatus Wert fest"
+  },
+  "args": [
+    {
+      "name": "clip_generic",
+      "type": "autocomplete"
+    },
+    {
+      "name": "clip_value",
+      "type": "number"
+    }
+  ]
+}
