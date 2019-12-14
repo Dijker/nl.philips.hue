@@ -1,62 +1,74 @@
 'use strict';
 
 const Homey = require('homey');
-const Device = require('../../lib/Device.js');
+const HueDevice = require('../../lib/HueDevice.js');
 
-const buttonEventMap = {
-	'1002': 'on',
-	'2002': 'increase_brightness',
-	'3002': 'decrease_brightness',
-	'4002': 'off',
+const BUTTON_EVENT_MAP = {
+	'1': 'on',
+	'2': 'increase_brightness',
+	'3': 'decrease_brightness',
+	'4': 'off',
+};
+
+module.exports = class DeviceDimmerSwitch extends HueDevice {
+    
+  onPoll({ device }) {   
+    super.onPoll(...arguments);
+    if(!device.state) return;
+    if(!device.config) return;
+		
+		const battery = parseInt(device.config.battery);
+		if( typeof battery === 'number')
+  		this.setCapabilityValue('measure_battery', battery).catch(this.error);
+      
+    // Use only the first digit, it's mapped to the button
+    // The fourth digit seems to be some type of event
+    let lastupdated = device.state.lastupdated;
+    let buttonevent = device.state.buttonevent;
+    
+    if( typeof buttonevent !== 'undefined' )
+      buttonevent = String(buttonevent).substring(0,1);
+            
+    // Initial load, don't trigger a Flow when the app has just started
+    if( typeof this.buttonevent === 'undefined' ) {
+      this.buttonevent = buttonevent;
+      this.lastupdated = lastupdated;
+    } else {
+
+      // if last press changed and button is the same
+      if( lastupdated !== this.lastupdated && buttonevent === this.buttonevent ) {
+        this.lastupdated = lastupdated;
+        
+        const button = BUTTON_EVENT_MAP[buttonevent];
+        this.log(`Same button pressed [${buttonevent}]:`, button);
+        
+        if( button ) {
+          this.driver.flowCardTriggerDimmerSwitchButtonPressed
+            .trigger(this, {}, { button })
+            .catch(this.error);
+        }
+      }
+
+      // else if the button has changed
+      else if( this.buttonevent !== buttonevent ) {
+        this.buttonevent = buttonevent;
+        this.lastupdated = lastupdated;
+        
+        const button = BUTTON_EVENT_MAP[buttonevent];
+        this.log(`New button pressed [${buttonevent}]:`, button);
+        
+        if( button ) {
+          this.driver.flowCardTriggerDimmerSwitchButtonPressed
+            .trigger(this, {}, { button })
+            .catch(this.error);
+        }
+      }
+    }
+    
+    // cleanup
+    device = null;
+    buttonevent = null;
+    lastupdated = null;
+  }
+  
 }
-
-class DeviceDimmerSwitch extends Device {
-	
-	onInit() {
-		super.onInit();
-		
-		this._buttonEvent = undefined;
-		this._lastUpdated = undefined;
-		
-		this._driver = this.getDriver();
-		
-	}
-	
-	_onSync() {	
-		super._onSync();
-		
-		this.setCapabilityValue('measure_battery', parseInt(this._device.config.battery));
-		
-		const lastUpdated = this._device.state.lastUpdated;
-		const buttonEvent = this._device.state.buttonEvent;
-		
-		if( typeof this._buttonEvent === 'undefined' ) {
-			this._buttonEvent = this._device.state.buttonEvent;
-			this._lastUpdated = this._device.state.lastUpdated;
-		} else {
-
-			// if last press changed and button is the same
-			if( lastUpdated !== this._lastUpdated && buttonEvent === this._buttonEvent ) {
-				this._lastUpdated = lastUpdated;
-				
-				this._driver.flowCardTrigger.trigger(this, null, {
-					button: buttonEventMap[buttonEvent]
-				}).then(this.log).catch( this.error );
-
-			}
-
-			// else if the button has changed
-			else if( this._buttonEvent !== buttonEvent ) {
-				this._buttonEvent = buttonEvent;
-				this._lastUpdated = lastUpdated;
-
-				this._driver.flowCardTrigger.trigger(this, null, {
-					button: buttonEventMap[buttonEvent]
-				}).catch( this.error );
-
-			}
-		}
-	}
-}
-
-module.exports = DeviceDimmerSwitch;

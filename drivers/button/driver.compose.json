@@ -1,0 +1,10 @@
+{
+  "$extends": "hue",
+  "name": {
+    "en": "Smart button",
+    "nl": "Smart button",
+    "de": "Smart button"
+  },
+  "class": "button",
+  "capabilities": []
+}

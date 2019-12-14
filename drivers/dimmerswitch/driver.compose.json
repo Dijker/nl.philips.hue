@@ -1,0 +1,13 @@
+{
+  "$extends": "hue",
+  "name": {
+    "en": "Dimmer Switch",
+    "nl": "Dimmer Switch",
+    "de": "Dimmschalter"
+  },
+  "class": "sensor",
+  "capabilities": [ "measure_battery" ],
+  "energy": {
+    "batteries": [ "CR2450" ]
+  }
+}

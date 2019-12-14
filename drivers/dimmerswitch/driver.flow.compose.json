@@ -1,0 +1,51 @@
+{
+  "triggers": [
+    {
+      "id": "dimmerswitch_button_pressed",
+      "title": {
+        "en": "A button is pressed",
+        "nl": "Een knop is ingedrukt",
+        "de": "Eine Taste wird gedrückt"
+      },
+      "args": [
+        {
+          "name": "button",
+          "type": "dropdown",
+          "values": [
+            {
+              "id": "on",
+              "label": {
+                "en": "On",
+                "nl": "Aan"
+              }
+            },
+            {
+              "id": "increase_brightness",
+              "label": {
+                "en": "Increase brightness",
+                "nl": "Verhoog helderheid",
+                "de": "Helligkeit erhöhen"
+              }
+            },
+            {
+              "id": "decrease_brightness",
+              "label": {
+                "en": "Decrease brightness",
+                "nl": "Verlaag helderheid",
+                "de": "Helligkeit verringern"
+              }
+            },
+            {
+              "id": "off",
+              "label": {
+                "en": "Off",
+                "nl": "Uit",
+                "de": "Aus"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
