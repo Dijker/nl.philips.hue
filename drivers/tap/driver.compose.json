@@ -1,0 +1,10 @@
+{
+  "$extends": "hue",
+  "name": {
+    "en": "Tap",
+    "nl": "Tap",
+    "de": "Tap"
+  },
+  "class": "other",
+  "capabilities": []
+}

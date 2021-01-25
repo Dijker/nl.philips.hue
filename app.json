@@ -1,158 +1,685 @@
 {
-	"id": "nl.philips.hue",
-	"version": "1.0.5",
-	"compatibility": ">=0.8.33",
-	"name": {
-		"en": "Philips Hue"
-	},
-	"description": {
-		"en": "Philips Hue for Homey"
-	},
-	"author": {
-		"name": "Athom B.V."
-	},
-	"images": {
-		"large": "assets/images/large.jpg",
-		"small": "assets/images/small.jpg"
-	},
-	"category": "lights",
-	"drivers": [
-		{
-			"id": "bulb",
-			"name": {
-				"en": "Philips Hue",
-				"nl": "Philips Hue"
-			},
-			"class": "light",
-			"capabilities": [ "onoff", "dim", "light_hue", "light_saturation", "light_temperature" ],
-			"images": {
-				"large": "drivers/bulb/assets/images/large.jpg",
-				"small": "drivers/bulb/assets/images/small.jpg"
-			},
-			"pair": [
-				{
-					"id": "press_button"
-				},
-				{
-					"id": "list_bulbs",
-					"template": "list_devices",
-					"navigation": {
-						"next": "add_bulbs"
-					}
-				},
-				{
-					"id": "add_bulbs",
-					"template": "add_devices"
-				}
-			]
-		}
-	],
-	"flow": {
-		"actions": [
-			{
-				"id": "shortAlert",
-				"title": {
-					"en": "Blink the light (short)",
-					"nl": "Knipper de lamp (kort)"
-				},
-				"args": [
-					{
-						"name": "device",
-						"type": "device",
-						"filter": "driver_id=bulb"
-					}
-				]
-			},
-			{
-				"id": "longAlert",
-				"title": {
-					"en": "Blink the light (long)",
-					"nl": "Knipper de lamp (lang)"
-				},
-				"args": [
-					{
-						"name": "device",
-						"type": "device",
-						"filter": "driver_id=bulb"
-					}
-				]
-			},
-			{
-				"id": "colorLoop",
-				"title": {
-					"en": "Play a colorloop effect",
-					"nl": "Speel een kleur effect"
-				},
-				"args": [
-					{
-						"name": "device",
-						"type": "device",
-						"filter": "driver_id=bulb"
-					},{
-						"name": "duration",
-						"type": "number",
-						"placeholder":{
-							"en": "Duration in seconds",
-							"nl": "Tijdsduur in seconden"
-						},
-						"min":"0"
-					}
-				]
-			},
-			{
-				"id": "startColorLoop",
-				"title": {
-					"en": "Start colorloop effect",
-					"nl": "Begin kleur effect"
-				},
-				"args": [
-					{
-						"name": "device",
-						"type": "device",
-						"filter": "driver_id=bulb"
-					}
-				]
-			},
-			{
-				"id": "stopColorLoop",
-				"title": {
-					"en": "Stop colorloop effect",
-					"nl": "Stop kleur effect"
-				},
-				"args": [
-					{
-						"name": "device",
-						"type": "device",
-						"filter": "driver_id=bulb"
-					}
-				]
-			},
-			{
-				"id": "setScene",
-				"title": {
-					"en": "Set a scene",
-					"nl": "Activeer een scene"
-				},
-				"args": [
-					{
-						"name": "scene",
-						"type": "autocomplete"
-					}
-				]
-			},
-			{
-				"id": "allOff",
-				"title": {
-					"en": "Turn all lights off in a room",
-					"nl": "Zet alle lampen uit in een ruimte"
-				},
-				"args": [
-					{
-						"name": "group",
-						"type": "autocomplete"
-					}
-				]
-			}
-		]
-	}
+  "id": "nl.philips.hue",
+  "version": "4.3.0",
+  "brandColor": "#F4AF2E",
+  "compatibility": ">=3.0.0",
+  "sdk": 2,
+  "name": {
+    "en": "Philips Hue"
+  },
+  "description": {
+    "en": "Transform the way you experience light"
+  },
+  "author": {
+    "name": "Athom B.V."
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Dennie de Groot",
+        "email": "mail@denniedegroot.nl"
+      }
+    ]
+  },
+  "images": {
+    "large": "assets/images/large.jpg",
+    "small": "assets/images/small.jpg"
+  },
+  "category": "lights",
+  "flow": {
+    "actions": [
+      {
+        "title": {
+          "en": "Turn all lights off in a room",
+          "nl": "Zet alle lampen uit in een ruimte",
+          "de": "Alle Lichter in einem Raum ausschalten"
+        },
+        "args": [
+          {
+            "name": "group",
+            "type": "autocomplete"
+          }
+        ],
+        "id": "groupOff"
+      },
+      {
+        "title": {
+          "en": "Turn all lights on in a room",
+          "nl": "Zet alle lampen aan in een ruimte",
+          "de": "Alle Lichter in einem Raum einschalten"
+        },
+        "args": [
+          {
+            "name": "group",
+            "type": "autocomplete"
+          }
+        ],
+        "id": "groupOn"
+      },
+      {
+        "title": {
+          "en": "Set brightness of all lights in a room",
+          "nl": "Zet de helderheid van alle lampen in een ruimte"
+        },
+        "duration": true,
+        "args": [
+          {
+            "name": "group",
+            "type": "autocomplete"
+          },
+          {
+            "name": "brightness",
+            "type": "range",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "decimals": 0,
+            "label": "%"
+          }
+        ],
+        "id": "groupSetBrightness"
+      },
+      {
+        "title": {
+          "en": "Set CLIPGenericStatus value",
+          "nl": "Stel CLIPGenericStatus waarde in",
+          "de": "Legen Sie den CLIPGenericStatus Wert fest"
+        },
+        "args": [
+          {
+            "name": "clip_generic",
+            "type": "autocomplete"
+          },
+          {
+            "name": "clip_value",
+            "type": "number"
+          }
+        ],
+        "id": "setCLIPGenericStatus"
+      },
+      {
+        "title": {
+          "en": "Set a scene",
+          "nl": "Activeer een scene",
+          "de": "Eine Szene setzen"
+        },
+        "args": [
+          {
+            "name": "scene",
+            "type": "autocomplete"
+          }
+        ],
+        "id": "setScene"
+      },
+      {
+        "id": "shortAlert",
+        "title": {
+          "en": "Blink the light (short)",
+          "nl": "Knipper de lamp (kort)",
+          "de": "Das Licht blinken lassen (kurz)"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bulb"
+          }
+        ]
+      },
+      {
+        "id": "longAlert",
+        "title": {
+          "en": "Blink the light (long)",
+          "nl": "Knipper de lamp (lang)",
+          "de": "Das Licht blinken lassen (lang)"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bulb"
+          }
+        ]
+      },
+      {
+        "id": "startColorLoop",
+        "title": {
+          "en": "Start colorloop effect",
+          "nl": "Begin kleur effect",
+          "de": "Farbschleifen-Effekt starten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bulb&capabilities=light_hue"
+          }
+        ]
+      },
+      {
+        "id": "stopColorLoop",
+        "title": {
+          "en": "Stop colorloop effect",
+          "nl": "Stop kleur effect",
+          "de": "Farbschleifen-Effekt anhalten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=bulb&capabilities=light_hue"
+          }
+        ]
+      },
+      {
+        "id": "enableMotionSensor",
+        "title": {
+          "en": "Enable sensor",
+          "nl": "Schakel sensor in",
+          "de": "Sensor aktivieren"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=motionsensor"
+          }
+        ]
+      },
+      {
+        "id": "disableMotionSensor",
+        "title": {
+          "en": "Disable sensor",
+          "nl": "Schakel sensor uit",
+          "de": "Sensor deaktivieren"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=motionsensor"
+          }
+        ]
+      }
+    ],
+    "triggers": [
+      {
+        "id": "button_button_pressed",
+        "title": {
+          "en": "The button has been pressed",
+          "nl": "De knop is ingedrukt"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
+      {
+        "id": "button_button_held",
+        "title": {
+          "en": "The button is being held",
+          "nl": "De knop werd ingehouden"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
+      {
+        "id": "button_button_released",
+        "title": {
+          "en": "The button has been released",
+          "nl": "De knop werd losgelaten"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=button"
+          }
+        ]
+      },
+      {
+        "id": "dimmerswitch_button_pressed",
+        "title": {
+          "en": "A button is pressed",
+          "nl": "Een knop is ingedrukt",
+          "de": "Eine Taste wird gedrückt"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=dimmerswitch"
+          },
+          {
+            "name": "button",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "increase_brightness",
+                "label": {
+                  "en": "Increase brightness",
+                  "nl": "Verhoog helderheid",
+                  "de": "Helligkeit erhöhen"
+                }
+              },
+              {
+                "id": "decrease_brightness",
+                "label": {
+                  "en": "Decrease brightness",
+                  "nl": "Verlaag helderheid",
+                  "de": "Helligkeit verringern"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit",
+                  "de": "Aus"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tap_button_pressed",
+        "title": {
+          "en": "A button is pressed",
+          "nl": "Een knop is ingedrukt",
+          "de": "Eine Taste wird gedrückt"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=tap"
+          },
+          {
+            "name": "button",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "button1",
+                "label": {
+                  "en": "Button 1",
+                  "nl": "Knop 1",
+                  "de": "Taste 1"
+                }
+              },
+              {
+                "id": "button2",
+                "label": {
+                  "en": "Button 2",
+                  "nl": "Knop 2",
+                  "de": "Taste 2"
+                }
+              },
+              {
+                "id": "button3",
+                "label": {
+                  "en": "Button 3",
+                  "nl": "Knop 3",
+                  "de": "Taste 3"
+                }
+              },
+              {
+                "id": "button4",
+                "label": {
+                  "en": "Button 4",
+                  "nl": "Knop 4",
+                  "de": "Taste 4"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "images": {
+        "large": "/drivers/bulb/assets/images/large.jpg",
+        "small": "/drivers/bulb/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Light",
+        "nl": "Lamp",
+        "de": "Licht"
+      },
+      "class": "light",
+      "capabilities": [
+        "onoff",
+        "dim",
+        "light_hue",
+        "light_saturation",
+        "light_temperature"
+      ],
+      "capabilitiesOptions": {
+        "dim": {
+          "opts": {
+            "duration": true
+          }
+        },
+        "light_hue": {
+          "opts": {
+            "duration": true
+          }
+        },
+        "light_saturation": {
+          "opts": {
+            "duration": true
+          }
+        },
+        "light_temperature": {
+          "opts": {
+            "duration": true
+          }
+        }
+      },
+      "id": "bulb"
+    },
+    {
+      "images": {
+        "large": "/drivers/button/assets/images/large.jpg",
+        "small": "/drivers/button/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Smart button",
+        "nl": "Smart button",
+        "de": "Smart button"
+      },
+      "class": "button",
+      "capabilities": [],
+      "id": "button"
+    },
+    {
+      "images": {
+        "large": "/drivers/dimmerswitch/assets/images/large.jpg",
+        "small": "/drivers/dimmerswitch/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Dimmer Switch",
+        "nl": "Dimmer Switch",
+        "de": "Dimmschalter"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_battery"
+      ],
+      "energy": {
+        "batteries": [
+          "CR2450"
+        ]
+      },
+      "id": "dimmerswitch"
+    },
+    {
+      "images": {
+        "large": "/drivers/motionsensor/assets/images/large.jpg",
+        "small": "/drivers/motionsensor/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Motion Sensor",
+        "nl": "Bewegingssensor",
+        "de": "Bewegungssensor"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "alarm_motion",
+        "measure_temperature",
+        "measure_luminance",
+        "measure_battery"
+      ],
+      "energy": {
+        "batteries": [
+          "AAA",
+          "AAA"
+        ]
+      },
+      "id": "motionsensor"
+    },
+    {
+      "images": {
+        "large": "/drivers/plug/assets/images/large.jpg",
+        "small": "/drivers/plug/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Plug"
+      },
+      "class": "socket",
+      "capabilities": [
+        "onoff"
+      ],
+      "id": "plug"
+    },
+    {
+      "images": {
+        "large": "/drivers/tap/assets/images/large.jpg",
+        "small": "/drivers/tap/assets/images/small.jpg"
+      },
+      "pair": [
+        {
+          "id": "list_bridges",
+          "template": "list_devices",
+          "options": {
+            "singular": true,
+            "title": {
+              "en": "Select your bridge..."
+            }
+          },
+          "navigation": {
+            "next": "check_authentication"
+          }
+        },
+        {
+          "id": "check_authentication",
+          "template": "loading"
+        },
+        {
+          "id": "authenticate"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "name": {
+        "en": "Tap",
+        "nl": "Tap",
+        "de": "Tap"
+      },
+      "class": "other",
+      "capabilities": [],
+      "id": "tap"
+    }
+  ]
 }

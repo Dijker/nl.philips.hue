@@ -1,0 +1,22 @@
+{
+  "title": {
+    "en": "Set brightness of all lights in a room",
+    "nl": "Zet de helderheid van alle lampen in een ruimte"
+  },
+  "duration": true,
+  "args": [
+    {
+      "name": "group",
+      "type": "autocomplete"
+    },
+    {
+      "name": "brightness",
+      "type": "range",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "decimals": 0,
+      "label": "%"
+    }
+  ]
+}

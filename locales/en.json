@@ -1,10 +1,15 @@
 {
 	"pair": {
+		"select_bridge": {
+			"title": "Select your Philips Hue bridge",
+			"no_bridges": "No Philips Hue bridges have been found."
+		},
 		"press_button": {
 			"title": "Press the button",
 			"description": "Press the button on your Philips Hue bridge"
 		}
 	},
+	"loading": "Searching for Hue Bridge...",
 	"no_bridges": "No bridges connected",
 	"unreachable": "Unreachable",
 	"all_lights": "All lights"
